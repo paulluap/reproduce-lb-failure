@@ -1,0 +1,43 @@
+== Gateway Properties
+....
+#turn on the recommended ReactiveLoadBalancerClientFilter instead of ribbon
+spring.cloud.loadbalancer.ribbon.enabled=false
+# turns on withHealthChecks().withCaching
+spring.cloud.loadbalancer.configurations=health-check
+
+spring.cloud.gateway.discovery.locator.enabled=true
+spring.application.name=demo-gateway
+....
+
+== Steps to Reproduce
+
+....
+#1. start consul on loalhost:8500
+
+#2. start demo gateway on port 8080
+cd demo-gateway
+mvn spring-boot:run 
+
+#3. start dmeo service on random port
+cd demo-service
+mvn spring-boot:run 
+
+#4. visit service through gateway
+curl localhost:8080/demo-service/hello
+
+#5. shutdown and restart demo-service 
+
+#6. repeat 4, 
+# Expected response: "hello" 
+# Actual response: : "status":503,"error":"Service Unavailable","
+
+....
+
+Note, the expected response returns if: 
+
+* turn off health-check for loadbalcner
+
+or if:
+
+* enable the default ribbon loadbalancer
+
