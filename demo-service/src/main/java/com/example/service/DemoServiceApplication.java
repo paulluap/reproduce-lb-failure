@@ -15,6 +15,7 @@ public class DemoServiceApplication {
 	
 	@GetMapping("/hello")
 	public String hello() {
+        System.out.println("demo service hit");
 		return "hello";
 	}
 
